@@ -1,17 +1,17 @@
 import 'package:easy_hotel/app/data/model/base_request.dart';
 
-class LoginRequestDto extends BaseRequest {
-  LoginRequestDto({
-    this.userName,
-    this.password,
+class ActiveOrdersRequestDto extends BaseRequest {
+  ActiveOrdersRequestDto({
+    this.branchId,
+    this.deliveryInfId,
   });
 
-  String? userName;
-  String? password;
+  int? branchId;
+  int? deliveryInfId;
 
   @override
   Map<String, dynamic> toJson() => {
-    "userName": userName,
-    "password": password,
+    "branchId": branchId,
+    "deliveryInfId": deliveryInfId,
   };
 }

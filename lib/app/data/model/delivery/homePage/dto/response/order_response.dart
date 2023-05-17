@@ -1,63 +1,15 @@
-import 'package:easy_hotel/app/data/model/base_request.dart';
-
-// class LoginResponse{
-//   LoginResponse({
-//     // required this.accessToken,
-//     // required this.tokenType,
-//     // required this.expiresIn,
-//     // required this.user,
-//     required this.success,
-//     required this.data,
-//     required this.msg,
-//     required this.code,
-//     required this.pagination,
-//   });
-//
-//   // final String accessToken;
-//   // final String tokenType;
-//   // final int? expiresIn;
-//   // final User user;
-//   final bool success;
-//   final dynamic data;
-//   final String code;
-//   final String msg;
-//   final dynamic pagination;
-//
-//
-//   factory LoginResponse.fromJson(json) => LoginResponse(
-//     // accessToken: json["access_token"],
-//     // tokenType: json["token_type"],
-//     // expiresIn: json["expires_in"],
-//     // user: User.fromJson(json["user"]),
-//     success: json["success"],
-//     data: json["data"],
-//     msg: json["msg"],
-//     code: json["code"],
-//     pagination: json["pagination"],
-//   );
-//
-//   @override
-//   Map<String, dynamic> toJson() => {
-//     // "access_token": accessToken,
-//     // "token_type": tokenType,
-//     // "expires_in": expiresIn,
-//     // "user": user.toJson(),
-//     "success": success,
-//     "data": data,
-//     "msg": msg,
-//     "code": code,
-//     "pagination": pagination,
-//   };
-// }
-
 // To parse this JSON data, do
 //
-//     final customer = customerFromJson(jsonString);
+//     final sales = salesFromJson(jsonString);
 
+import 'dart:convert';
 
+List<Sales> salesFromJson(String str) => List<Sales>.from(json.decode(str).map((x) => Sales.fromJson(x)));
 
-class LoginResponse {
-  LoginResponse({
+String salesToJson(List<Sales> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class Sales {
+  Sales({
     this.id,
     this.markEdit,
     this.msg,
@@ -76,45 +28,24 @@ class LoginResponse {
     this.branchSerial,
     this.igmaOwnerSerial,
     this.userCode,
-    this.code,
-    this.name,
+    this.customerName,
+    this.customerMobile,
+    this.gallaryName,
+    this.invoiceDate,
+    this.takeDate,
+    this.status,
+    this.invoiceNumber,
+    this.remarks,
+    this.customerId,
+    this.deliveryPlace,
+    this.tableNumber,
     this.address,
-    this.telephone,
-    this.fax,
-    this.mobile,
-    this.password,
-    this.personResponsible,
-    this.phone,
-    this.email,
+    this.offerId,
     this.type,
-    this.postBox,
-    this.discount,
-    this.openBalanceDebit,
-    this.openBalanceCredit,
-    this.balanceLimit,
-    this.remark,
-    this.active,
-    this.zip,
-    this.contactPerson,
-    this.phone2,
-    this.openBalanceDate,
-    this.companyName,
-    this.nationId,
-    this.accountBankNumber,
-    this.sponsorName1,
-    this.sponsorPhone1,
-    this.sponsorName2,
-    this.sponsorPhone2,
-    this.birthdate,
-    this.countryId,
-    this.currencyId,
-    this.regionId,
-    this.workTypeId,
-    this.parent,
-    this.supplierType,
-    this.contractorType,
-    this.globalFilter,
-    this.hotelBoking
+    this.tax,
+    this.deliveryInfId,
+    this.salesDetialList,
+    this.salesDetialListDeleted,
   });
 
   int? id;
@@ -123,8 +54,170 @@ class LoginResponse {
   dynamic msgType;
   dynamic markDisable;
   dynamic createdBy;
-  dynamic createdDate;
-  dynamic index;
+  DateTime? createdDate;
+  int? index;
+  dynamic companyId;
+  dynamic createdByName;
+  int? branchId;
+  dynamic deletedBy;
+  dynamic deletedDate;
+  dynamic igmaOwnerId;
+  dynamic companyCode;
+  dynamic branchSerial;
+  dynamic igmaOwnerSerial;
+  dynamic userCode;
+  String? customerName;
+  dynamic customerMobile;
+  dynamic gallaryName;
+  DateTime? invoiceDate;
+  dynamic takeDate;
+  dynamic status;
+  dynamic invoiceNumber;
+  dynamic remarks;
+  int? customerId;
+  int? deliveryPlace;
+  dynamic tableNumber;
+  dynamic address;
+  dynamic offerId;
+  int? type;
+  dynamic tax;
+  int? deliveryInfId;
+  List<SalesDetialList>? salesDetialList;
+  dynamic salesDetialListDeleted;
+
+  static List<Sales> fromList(dynamic json) => List.from(json.map((e) => Sales.fromJson(e)));
+
+
+  factory Sales.fromJson(Map<String, dynamic> json) => Sales(
+    id: json["id"] == null ? null : json["id"],
+    markEdit: json["markEdit"] == null ? null : json["markEdit"],
+    msg: json["msg"],
+    msgType: json["msgType"],
+    markDisable: json["markDisable"],
+    createdBy: json["createdBy"],
+    createdDate: json["createdDate"] == null ? null : DateTime.parse(json["createdDate"]),
+    index: json["index"] == null ? null : json["index"],
+    companyId: json["companyId"],
+    createdByName: json["createdByName"],
+    branchId: json["branchId"] == null ? null : json["branchId"],
+    deletedBy: json["deletedBy"],
+    deletedDate: json["deletedDate"],
+    igmaOwnerId: json["igmaOwnerId"],
+    companyCode: json["companyCode"],
+    branchSerial: json["branchSerial"],
+    igmaOwnerSerial: json["igmaOwnerSerial"],
+    userCode: json["userCode"],
+    customerName: json["customerName"] == null ? null : json["customerName"],
+    customerMobile: json["customerMobile"],
+    gallaryName: json["gallaryName"],
+    invoiceDate: json["invoiceDate"] == null ? null : DateTime.parse(json["invoiceDate"]),
+    takeDate: json["takeDate"],
+    status: json["status"],
+    invoiceNumber: json["invoiceNumber"],
+    remarks: json["remarks"],
+    customerId: json["customerId"] == null ? null : json["customerId"],
+    deliveryPlace: json["deliveryPlace"] == null ? null : json["deliveryPlace"],
+    tableNumber: json["tableNumber"],
+    address: json["address"],
+    offerId: json["offerId"],
+    type: json["type"] == null ? null : json["type"],
+    tax: json["tax"],
+    deliveryInfId: json["deliveryInfId"] == null ? null : json["deliveryInfId"],
+    salesDetialList: json["salesDetialList"] == null ? null : List<SalesDetialList>.from(json["salesDetialList"].map((x) => SalesDetialList.fromJson(x))),
+    salesDetialListDeleted: json["salesDetialListDeleted"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id == null ? null : id,
+    "markEdit": markEdit == null ? null : markEdit,
+    "msg": msg,
+    "msgType": msgType,
+    "markDisable": markDisable,
+    "createdBy": createdBy,
+    "createdDate": createdDate == null ? null : createdDate!.toIso8601String(),
+    "index": index == null ? null : index,
+    "companyId": companyId,
+    "createdByName": createdByName,
+    "branchId": branchId == null ? null : branchId,
+    "deletedBy": deletedBy,
+    "deletedDate": deletedDate,
+    "igmaOwnerId": igmaOwnerId,
+    "companyCode": companyCode,
+    "branchSerial": branchSerial,
+    "igmaOwnerSerial": igmaOwnerSerial,
+    "userCode": userCode,
+    "customerName": customerName == null ? null : customerName,
+    "customerMobile": customerMobile,
+    "gallaryName": gallaryName,
+    "invoiceDate": invoiceDate == null ? null : invoiceDate!.toIso8601String(),
+    "takeDate": takeDate,
+    "status": status,
+    "invoiceNumber": invoiceNumber,
+    "remarks": remarks,
+    "customerId": customerId == null ? null : customerId,
+    "deliveryPlace": deliveryPlace == null ? null : deliveryPlace,
+    "tableNumber": tableNumber,
+    "address": address,
+    "offerId": offerId,
+    "type": type == null ? null : type,
+    "tax": tax,
+    "deliveryInfId": deliveryInfId == null ? null : deliveryInfId,
+    "salesDetialList": salesDetialList == null ? null : List<dynamic>.from(salesDetialList!.map((x) => x.toJson())),
+    "salesDetialListDeleted": salesDetialListDeleted,
+  };
+}
+
+class SalesDetialList {
+  SalesDetialList({
+    this.id,
+    this.markEdit,
+    this.msg,
+    this.msgType,
+    this.markDisable,
+    this.createdBy,
+    this.createdDate,
+    this.index,
+    this.companyId,
+    this.createdByName,
+    this.branchId,
+    this.deletedBy,
+    this.deletedDate,
+    this.igmaOwnerId,
+    this.companyCode,
+    this.branchSerial,
+    this.igmaOwnerSerial,
+    this.userCode,
+    this.name,
+    this.code,
+    this.price,
+    this.image,
+    this.groupId,
+    this.itemId,
+    this.net,
+    this.quantity,
+    this.number,
+    this.tax,
+    this.currencySerial,
+    this.rate,
+    this.remark,
+    this.appId,
+    this.resOfferId,
+    this.resItemVariation,
+    this.salesCode,
+    this.deliveryBy,
+    this.deliveryDate,
+    this.packingBy,
+    this.packingDate,
+  });
+
+  int? id;
+  bool? markEdit;
+  dynamic msg;
+  dynamic msgType;
+  dynamic markDisable;
+  dynamic createdBy;
+  DateTime? createdDate;
+  int? index;
   dynamic companyId;
   dynamic createdByName;
   dynamic branchId;
@@ -135,55 +228,37 @@ class LoginResponse {
   dynamic branchSerial;
   dynamic igmaOwnerSerial;
   dynamic userCode;
-  dynamic code;
   String? name;
-  String? address;
-  dynamic telephone;
-  dynamic fax;
-  dynamic mobile;
-  dynamic password;
-  dynamic personResponsible;
-  String? phone;
-  String? email;
-  dynamic type;
-  dynamic postBox;
-  dynamic discount;
-  dynamic openBalanceDebit;
-  dynamic openBalanceCredit;
-  dynamic balanceLimit;
+  dynamic code;
+  dynamic price;
+  dynamic image;
+  dynamic groupId;
+  int? itemId;
+  dynamic net;
+  dynamic quantity;
+  dynamic number;
+  dynamic tax;
+  dynamic currencySerial;
+  dynamic rate;
   dynamic remark;
-  dynamic active;
-  dynamic zip;
-  dynamic contactPerson;
-  dynamic phone2;
-  dynamic openBalanceDate;
-  dynamic companyName;
-  dynamic nationId;
-  dynamic accountBankNumber;
-  dynamic sponsorName1;
-  dynamic sponsorPhone1;
-  dynamic sponsorName2;
-  dynamic sponsorPhone2;
-  dynamic birthdate;
-  dynamic countryId;
-  dynamic currencyId;
-  dynamic regionId;
-  dynamic workTypeId;
-  dynamic parent;
-  dynamic supplierType;
-  dynamic contractorType;
-  dynamic globalFilter;
-  int? hotelBoking;
+  dynamic appId;
+  dynamic resOfferId;
+  int? resItemVariation;
+  String? salesCode;
+  String?deliveryBy;
+  DateTime?deliveryDate;
+  String?packingBy;
+  DateTime?packingDate;
 
-  factory LoginResponse.fromJson( dynamic json) => LoginResponse(
+  factory SalesDetialList.fromJson(Map<String, dynamic> json) => SalesDetialList(
     id: json["id"] == null ? null : json["id"],
     markEdit: json["markEdit"] == null ? null : json["markEdit"],
     msg: json["msg"],
     msgType: json["msgType"],
     markDisable: json["markDisable"],
     createdBy: json["createdBy"],
-    createdDate: json["createdDate"],
-    index: json["index"],
+    createdDate: json["createdDate"] == null ? null : DateTime.parse(json["createdDate"]),
+    index: json["index"] == null ? null : json["index"],
     companyId: json["companyId"],
     createdByName: json["createdByName"],
     branchId: json["branchId"],
@@ -194,46 +269,27 @@ class LoginResponse {
     branchSerial: json["branchSerial"],
     igmaOwnerSerial: json["igmaOwnerSerial"],
     userCode: json["userCode"],
-    code: json["code"],
     name: json["name"] == null ? null : json["name"],
-    address: json["address"] == null ? null : json["address"],
-    telephone: json["telephone"],
-    fax: json["fax"],
-    mobile: json["mobile"],
-    password: json["password"],
-    personResponsible: json["personResponsible"],
-    phone: json["phone"] == null ? null : json["phone"],
-    email: json["email"] == null ? null : json["email"],
-    type: json["type"],
-    postBox: json["postBox"],
-    discount: json["discount"] == null ? null : json["discount"],
-    openBalanceDebit: json["openBalanceDebit"] == null ? null :  double.parse(json["openBalanceDebit"].toString())  ,
-    openBalanceCredit: json["openBalanceCredit"] == null ? null : double.parse(json["openBalanceCredit"].toString()),
-    balanceLimit: json["balanceLimit"],
+    code: json["code"],
+    price: json["price"] == null ? null : json["price"],
+    image: json["image"],
+    groupId: json["groupId"],
+    itemId: json["itemId"] == null ? null : json["itemId"],
+    net: json["net"] == null ? null : json["net"],
+    quantity: json["quantity"] == null ? null : json["quantity"],
+    number: json["number"],
+    tax: json["tax"],
+    currencySerial: json["currencySerial"],
+    rate: json["rate"],
     remark: json["remark"],
-    active: json["active"],
-    zip: json["zip"],
-    contactPerson: json["contactPerson"],
-    phone2: json["phone2"],
-    openBalanceDate: json["openBalanceDate"],
-    companyName: json["companyName"],
-    nationId: json["nationId"],
-    accountBankNumber: json["accountBankNumber"],
-    sponsorName1: json["sponsorName1"],
-    sponsorPhone1: json["sponsorPhone1"],
-    sponsorName2: json["sponsorName2"],
-    sponsorPhone2: json["sponsorPhone2"],
-    birthdate: json["birthdate"],
-    countryId: json["countryId"],
-    currencyId: json["currencyId"],
-    regionId: json["regionId"],
-    workTypeId: json["workTypeId"],
-    parent: json["parent"],
-    supplierType: json["supplierType"],
-    contractorType: json["contractorType"],
-    globalFilter: json["globalFilter"],
-    hotelBoking: json["hotelBoking"] == null ? null : json["hotelBoking"],
-
+    appId: json["appId"],
+    resOfferId: json["resOfferId"],
+    resItemVariation: json["resItemVariation"] == null ? null : json["resItemVariation"],
+    salesCode: json["salesCode"] == null ? null : json["salesCode"],
+    deliveryBy: json["deliveryBy"] == null ? null : json["deliveryBy"],
+    deliveryDate: json["deliveryDate"] == null ? null : DateTime.parse(json["deliveryDate"]),
+    packingBy: json["packingBy"] == null ? null : json["packingBy"],
+    packingDate: json["packingDate"] == null ? null : DateTime.parse(json["packingDate"]),
 
   );
 
@@ -244,8 +300,8 @@ class LoginResponse {
     "msgType": msgType,
     "markDisable": markDisable,
     "createdBy": createdBy,
-    "createdDate": createdDate,
-    "index": index,
+    "createdDate": createdDate == null ? null : createdDate!.toIso8601String(),
+    "index": index == null ? null : index,
     "companyId": companyId,
     "createdByName": createdByName,
     "branchId": branchId,
@@ -256,45 +312,27 @@ class LoginResponse {
     "branchSerial": branchSerial,
     "igmaOwnerSerial": igmaOwnerSerial,
     "userCode": userCode,
-    "code": code,
     "name": name == null ? null : name,
-    "address": address == null ? null : address,
-    "telephone": telephone,
-    "fax": fax,
-    "mobile": mobile,
-    "password": password,
-    "personResponsible": personResponsible,
-    "phone": phone == null ? null : phone,
-    "email": email == null ? null : email,
-    "type": type,
-    "postBox": postBox,
-    "discount": discount == null ? null : discount,
-    "openBalanceDebit": openBalanceDebit == null ? null : openBalanceDebit,
-    "openBalanceCredit": openBalanceCredit == null ? null : openBalanceCredit,
-    "balanceLimit": balanceLimit,
+    "code": code,
+    "price": price == null ? null : price,
+    "image": image,
+    "groupId": groupId,
+    "itemId": itemId == null ? null : itemId,
+    "net": net == null ? null : net,
+    "quantity": quantity == null ? null : quantity,
+    "number": number,
+    "tax": tax,
+    "currencySerial": currencySerial,
+    "rate": rate,
     "remark": remark,
-    "active": active,
-    "zip": zip,
-    "contactPerson": contactPerson,
-    "phone2": phone2,
-    "openBalanceDate": openBalanceDate,
-    "companyName": companyName,
-    "nationId": nationId,
-    "accountBankNumber": accountBankNumber,
-    "sponsorName1": sponsorName1,
-    "sponsorPhone1": sponsorPhone1,
-    "sponsorName2": sponsorName2,
-    "sponsorPhone2": sponsorPhone2,
-    "birthdate": birthdate,
-    "countryId": countryId,
-    "currencyId": currencyId,
-    "regionId": regionId,
-    "workTypeId": workTypeId,
-    "parent": parent,
-    "supplierType": supplierType,
-    "contractorType": contractorType,
-    "globalFilter": globalFilter,
-    "hotelBoking": hotelBoking == null ? null : hotelBoking,
+    "appId": appId,
+    "resOfferId": resOfferId,
+    "resItemVariation": resItemVariation == null ? null : resItemVariation,
+    "salesCode": salesCode == null ? null : salesCode,
+    "deliveryBy": deliveryBy == null ? null : deliveryBy,
+    "deliveryDate": deliveryDate == null ? null : deliveryDate!.toIso8601String(),
+    "packingBy": packingBy == null ? null : packingBy,
+    "packingDate": packingDate == null ? null : packingDate!.toIso8601String(),
 
   };
 }

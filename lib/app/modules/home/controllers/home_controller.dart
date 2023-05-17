@@ -1,69 +1,124 @@
 import 'package:easy_hotel/app/core/utils/show_popup_text.dart';
 import 'package:easy_hotel/app/core/utils/user_manager.dart';
 import 'package:easy_hotel/app/core/values/app_constants.dart';
-import 'package:easy_hotel/app/data/model/spa/dto/request/spa_detail_request_dto.dart';
-import 'package:easy_hotel/app/data/model/spa/dto/request/spa_save_request.dart';
-import 'package:easy_hotel/app/data/model/spa/dto/response/spa_response_dto.dart';
-import 'package:easy_hotel/app/data/repository/spa/spa_repository.dart';
+import 'package:easy_hotel/app/data/model/delivery/homePage/dto/request/active_orders_request.dart';
+import 'package:easy_hotel/app/data/model/delivery/homePage/dto/request/delayed_orders_request.dart';
+import 'package:easy_hotel/app/data/model/delivery/homePage/dto/request/deliver_request.dart';
+import 'package:easy_hotel/app/data/model/delivery/homePage/dto/response/order_response.dart';
+import 'package:easy_hotel/app/data/repository/delivery/delivery_repository.dart';
 import 'package:get/get.dart';
 
-class SpaDetailsController extends GetxController {
+class HomeController extends GetxController {
 
-  final int id = Get.arguments;
-   RxInt  index = 1.obs;
+   RxInt  index = 0.obs;
   RxInt  serviceIndex = 0.obs;
   RxInt selectedType = 1.obs;
-  SpaResponse? spa ;
   final isLoading = false.obs;
-  final servicesSelected = <int>[].obs;
+  var activeOrders = <Sales>[].obs;
+  var allActiveOrders = <Sales>[].obs;
+  final deliverdOrders = <Sales>[].obs;
+  final allOrders = <Sales>[].obs;
+  var delayedOrders = <Sales>[].obs;
+  var allDelayedOrders = <Sales>[].obs;
+
 
 
 
    @override
   void onInit() {
     super.onInit();
-    getSpaDetail();
-
+    getActiveOrders();
 
   }
 
-
-  getSpaDetail() async {
-    isLoading(true);
-    final request = SpaDetailRequest(
-      id:id ,
-
-    );
-    SpaRepository().getSpaDetail(request,
-        onSuccess: (data) {
-          spa=data.data;
-
-        },
-        onError: (e) => showPopupText( e.toString()),
-        onComplete: () => isLoading(false)
-    );
-  }
-
-   getSpaSave() async {
+   getActiveOrders() async {
      isLoading(true);
-     final request = SpaSaveRequest(
-       spaId:spa!.id! ,
-       spaItemDTOList: servicesSelected,
-       salesDetailSpaItemDTOList: [],
-       companyId: AppConstants.companyId,
-       createdBy: AppConstants.createdBy,
-       customerId: UserManager().user!.id,
-       branchId: spa!.branchId,
+     final request = ActiveOrdersRequestDto(
+       branchId:  UserManager().user!.branchId,
+       deliveryInfId: UserManager().user!.id
+
+
      );
-     SpaRepository().getSpaSave(request,
+     DeliveryRepository().getActiveOrders(request,
          onSuccess: (data) {
-           showPopupText( "تم الحفظ بنجاح");
+           activeOrders.assignAll(data.data);
+           allActiveOrders=activeOrders;
+
          },
          onError: (e) => showPopupText( e.toString()),
          onComplete: () => isLoading(false)
      );
    }
 
+   getDeliveredOrders() async {
+     isLoading(true);
+     final request = ActiveOrdersRequestDto(
+         branchId: UserManager().user!.branchId,
+         deliveryInfId: UserManager().user!.id
+     );
+     DeliveryRepository().getDeliveredOrders(request,
+         onSuccess: (data) {
+           deliverdOrders.assignAll(data.data);
+         },
+         onError: (e) => showPopupText( e.toString()),
+         onComplete: () => isLoading(false)
+     );
+   }
 
+   getAllOrders() async {
+     isLoading(true);
+     final request = ActiveOrdersRequestDto(
+         branchId: UserManager().user!.branchId,
+         deliveryInfId:UserManager().user!.id
+
+
+     );
+     DeliveryRepository().getAllOrders(request,
+         onSuccess: (data) {
+           allOrders.assignAll(data.data);
+         },
+         onError: (e) => showPopupText( e.toString()),
+         onComplete: () => isLoading(false)
+     );
+   }
+
+   getDelyedOrders() async {
+     isLoading(true);
+     final request = DelayOrdersRequestDto(
+         branchId:  UserManager().user!.branchId,
+
+
+     );
+     DeliveryRepository().getDelayedOrders(request,
+         onSuccess: (data) {
+           delayedOrders.assignAll(data.data);
+           allDelayedOrders=delayedOrders;
+
+         },
+         onError: (e) => showPopupText( e.toString()),
+         onComplete: () => isLoading(false)
+     );
+   }
+
+   filter(String num){
+
+     delayedOrders.value = List<Sales>.from(allDelayedOrders.where((element) => element.invoiceNumber!.contains(num)).toList());
+
+   }
+   getDeliver(int id ,int deliverId) async {
+     isLoading(true);
+     final request = DeliverRequestDto(
+       id: id,
+       deliverBy: deliverId
+     );
+     DeliveryRepository().getdeliver(request,
+         onSuccess: (data) {
+           getActiveOrders();
+           showPopupText( "تم توصيل الاوردر");
+         },
+         onError: (e) => showPopupText( e.toString()),
+         onComplete: () => isLoading(false)
+     );
+   }
 
 }
