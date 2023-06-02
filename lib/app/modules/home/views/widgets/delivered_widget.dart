@@ -12,20 +12,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:readmore/readmore.dart';
 
+import '../../../../components/app_refresh_indecetor.dart';
 
 class DeliveredOrdersWidget extends GetView<HomeController> {
-  const DeliveredOrdersWidget( {Key? key})
-      : super(key: key);
-
+  const DeliveredOrdersWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
 
     return Obx(() {
-      if(controller.isLoading.value){
+      if (controller.isLoading.value) {
         return Center(
           child: Common.getSpin(),
         );
@@ -33,27 +30,29 @@ class DeliveredOrdersWidget extends GetView<HomeController> {
       return SizedBox(
           height: size.height,
           width: size.width,
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                for(int i = 0; i < controller.deliverdOrders.length; i ++)
-                  OrderContainer(
+          child: AppRefreshIndicator(
+            onRefresh: () async => await controller.getDeliveredOrders(),
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              child: Column(
+                children: [
+                  for (int i = 0; i < controller.deliverdOrders.length; i++)
+                    OrderContainer(
                       false,
-                      controller.deliverdOrders[i].invoiceNumber??0,
-                      controller.deliverdOrders[i].customerId??0,
-                      controller.deliverdOrders[i].invoiceNumber??0,
-                      controller.deliverdOrders[i].customerName ??"",
+                      controller.deliverdOrders[i].invoiceNumber ?? 0,
+                      controller.deliverdOrders[i].customerId ?? 0,
+                      controller.deliverdOrders[i].invoiceNumber ?? 0,
+                      controller.deliverdOrders[i].customerName ?? "",
                       controller.deliverdOrders[i].address,
-                      0,0),
-
-              ],
+                      0,
+                      0,
+                      controller.activeOrders[i].customerId ?? -1,
+                    ),
+                ],
+              ),
             ),
-          )
-      );
+          ));
     });
   }
-
 }
-

@@ -12,6 +12,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:readmore/readmore.dart';
 
+import '../../../../components/app_refresh_indecetor.dart';
+
 
 class AllOrdersWidget extends GetView<HomeController> {
   const AllOrdersWidget( {Key? key})
@@ -33,22 +35,28 @@ class AllOrdersWidget extends GetView<HomeController> {
       return SizedBox(
           height: size.height,
           width: size.width,
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                for(int i = 0; i < controller.allOrders.length; i ++)
-                  OrderContainer(
-                      false,
-                      controller.allOrders[i].invoiceNumber??0,
-                      controller.allOrders[i].customerId??0,
-                      controller.allOrders[i].invoiceNumber??0,
-                      controller.allOrders[i].customerName ??"",
-                      controller.allOrders[i].address,
-                      0,0),
+          child: AppRefreshIndicator(
+            onRefresh: () async => await controller.getAllOrders(),
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              child: Column(
+                children: [
+                  for(int i = 0; i < controller.allOrders.length; i ++)
+                    OrderContainer(
+                        false,
+                        controller.allOrders[i].invoiceNumber??0,
+                        controller.allOrders[i].customerId??0,
+                        controller.allOrders[i].invoiceNumber??0,
+                        controller.allOrders[i].customerName ??"",
+                        controller.allOrders[i].address,
+                        0,0,
+                      controller.activeOrders[i].customerId ?? -1,
 
-              ],
+                    ),
+
+                ],
+              ),
             ),
           )
       );

@@ -1,4 +1,3 @@
-
 import 'package:easy_hotel/app/components/text_widget.dart';
 import 'package:easy_hotel/app/core/themes/app_text_theme.dart';
 import 'package:easy_hotel/app/core/utils/common.dart';
@@ -13,40 +12,40 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:readmore/readmore.dart';
 
+import '../../../../components/app_refresh_indecetor.dart';
 
 class DelayedOrdersWidget extends GetView<HomeController> {
-  const DelayedOrdersWidget( {Key? key})
-      : super(key: key);
-
+  const DelayedOrdersWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
 
     return Obx(() {
-      if(controller.isLoading.value){
+      if (controller.isLoading.value) {
         return Center(
           child: Common.getSpin(),
         );
       }
-      return Column(
-        children: [
-          for(int i = 0; i < controller.delayedOrders.length; i ++)
-            OrderContainer(
+      return AppRefreshIndicator(
+        onRefresh: () async => await controller.getDelyedOrders(),
+        child: Column(
+          children: [
+            for (int i = 0; i < controller.delayedOrders.length; i++)
+              OrderContainer(
                 false,
-                controller.delayedOrders[i].invoiceNumber??0,
-                controller.delayedOrders[i].customerId??0,
-                controller.delayedOrders[i].invoiceNumber??0,
-                controller.delayedOrders[i].customerName ??"",
+                controller.delayedOrders[i].invoiceNumber ?? 0,
+                controller.delayedOrders[i].customerId ?? 0,
+                controller.delayedOrders[i].invoiceNumber ?? 0,
+                controller.delayedOrders[i].customerName ?? "",
                 controller.delayedOrders[i].address,
-                0,0),
-
-        ],
+                0,
+                0,
+                controller.activeOrders[i].customerId ?? -1,
+              ),
+          ],
+        ),
       );
     });
   }
-
 }
-

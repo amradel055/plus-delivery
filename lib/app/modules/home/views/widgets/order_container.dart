@@ -11,10 +11,12 @@ import 'package:get/get.dart';
 
 
 class OrderContainer extends GetView<HomeController> {
-  const OrderContainer(this.showDetails, this.num, this.clientNum, this.time, this.name, this.address, this.id, this.deliveryBy,  {Key? key}) : super(key: key);
+  const OrderContainer(this.showDetails, this.num, this.clientNum,
+      this.time, this.name, this.address, this.id, this.deliveryBy, this.clientId , {Key? key}) : super(key: key);
   final bool showDetails;
   final String num;
   final int clientNum;
+  final int clientId;
   final int id;
   final int deliveryBy;
   final String time;
@@ -101,7 +103,7 @@ class OrderContainer extends GetView<HomeController> {
 
                       showDetails ?   GestureDetector(
                         onTap: (){
-                          controller.getDeliver(id, deliveryBy);
+                          controller.getDeliver(id, deliveryBy , clientId);
                         },
                         child: Container(
 

@@ -13,6 +13,8 @@ abstract class AppConstants {
   static const PRIVACY_URL = "";
   static const companyId = 159;
   static const createdBy = 354;
+  static const delivery = "delivery" ;
+  static const customer = "customer" ;
 
 
 

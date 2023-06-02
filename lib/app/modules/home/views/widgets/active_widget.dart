@@ -12,6 +12,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:readmore/readmore.dart';
 
+import '../../../../components/app_refresh_indecetor.dart';
+
 
 class ActiveOrdersWidget extends GetView<HomeController> {
   const ActiveOrdersWidget( {Key? key})
@@ -33,24 +35,29 @@ class ActiveOrdersWidget extends GetView<HomeController> {
       return SizedBox(
           height: size.height,
           width: size.width,
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                for(int i = 0; i < controller.activeOrders.length; i ++)
-                  OrderContainer(
-                      true,
-                      controller.activeOrders[i].invoiceNumber??0,
-                      controller.activeOrders[i].customerId??0,
-                      controller.activeOrders[i].invoiceNumber??0,
-                      controller.activeOrders[i].customerName ??"",
-                      controller.activeOrders[i].address ?? "",
-                      controller.activeOrders[i].id!,
-                      1
-                  ),
+          child: AppRefreshIndicator(
+            onRefresh: () async => await controller.getActiveOrders(),
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              child: Column(
+                children: [
+                  for(int i = 0; i < controller.activeOrders.length; i ++)
+                    OrderContainer(
+                        true,
+                        controller.activeOrders[i].invoiceNumber??0,
+                        controller.activeOrders[i].customerId??0,
+                        controller.activeOrders[i].invoiceNumber??0,
+                        controller.activeOrders[i].customerName ??"",
+                        controller.activeOrders[i].address ?? "",
+                        controller.activeOrders[i].id!,
+                        1,
+                      controller.activeOrders[i].customerId ?? -1,
 
-              ],
+                    ),
+
+                ],
+              ),
             ),
           )
       );
