@@ -26,13 +26,15 @@ class HomeController extends GetxController {
   var delayedOrders = <Sales>[].obs;
   var allDelayedOrders = <Sales>[].obs;
   final user = UserManager();
+
   @override
   void onInit() {
     super.onInit();
     getActiveOrders();
     final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
-    firebaseMessaging.subscribeToTopic("${AppConstants.delivery}_${user.user!.id}");
+    firebaseMessaging
+        .subscribeToTopic("${AppConstants.delivery}_${user.user!.id}");
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       RemoteMessage? initialMessage =
           await FirebaseMessaging.instance.getInitialMessage();
@@ -73,8 +75,7 @@ class HomeController extends GetxController {
   getActiveOrders() async {
     isLoading(true);
     final request = ActiveOrdersRequestDto(
-        branchId: UserManager().user!.branchId,
-        deliveryInfId: UserManager().user!.id);
+        branchId: user.user!.branchId, deliveryInfId: user.user!.id);
     DeliveryRepository().getActiveOrders(request,
         onSuccess: (data) {
           activeOrders.assignAll(data.data);
@@ -87,8 +88,7 @@ class HomeController extends GetxController {
   getDeliveredOrders() async {
     isLoading(true);
     final request = ActiveOrdersRequestDto(
-        branchId: UserManager().user!.branchId,
-        deliveryInfId: UserManager().user!.id);
+        branchId: user.user!.branchId, deliveryInfId: user.user!.id);
     DeliveryRepository().getDeliveredOrders(request,
         onSuccess: (data) {
           deliverdOrders.assignAll(data.data);
@@ -100,8 +100,7 @@ class HomeController extends GetxController {
   getAllOrders() async {
     isLoading(true);
     final request = ActiveOrdersRequestDto(
-        branchId: UserManager().user!.branchId,
-        deliveryInfId: UserManager().user!.id);
+        branchId: user.user!.branchId, deliveryInfId: user.user!.id);
     DeliveryRepository().getAllOrders(request,
         onSuccess: (data) {
           allOrders.assignAll(data.data);
@@ -113,7 +112,7 @@ class HomeController extends GetxController {
   getDelyedOrders() async {
     isLoading(true);
     final request = DelayOrdersRequestDto(
-      branchId: UserManager().user!.branchId,
+      branchId: user.user!.branchId,
     );
     DeliveryRepository().getDelayedOrders(request,
         onSuccess: (data) {
@@ -136,7 +135,7 @@ class HomeController extends GetxController {
     DeliveryRepository().getdeliver(request,
         onSuccess: (data) {
           getActiveOrders();
-          UserManager().sendNewOrderNotification(
+          user.sendNewOrderNotification(
               "${AppConstants.customer}_$customerId", AppStrings.orderStarted);
           showPopupText(AppStrings.orderStarted);
         },
