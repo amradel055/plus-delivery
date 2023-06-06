@@ -6,6 +6,7 @@ import 'package:easy_hotel/app/core/values/app_strings.dart';
 import 'package:easy_hotel/app/modules/home/controllers/home_controller.dart';
 import 'package:easy_hotel/app/modules/home/views/widgets/order_container.dart';
 import 'package:easy_hotel/app/routes/app_pages.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,6 +29,31 @@ class DeliveredOrdersWidget extends GetView<HomeController> {
         );
       }
       return SizedBox(
+          width: size.width,
+          child: AppRefreshIndicator(
+            onRefresh: () async => await controller.getDeliveredOrders(),
+            child: Obx(() {
+              return ListView.builder(
+                itemCount: controller.deliverdOrders.length,
+                padding: const EdgeInsets.all(4),
+                dragStartBehavior: DragStartBehavior.start,
+                itemBuilder: (context, i) {
+                  final order = controller.deliverdOrders[i];
+                  return OrderContainer(
+                    true,
+                    order.invoiceNumber ?? 0,
+                    order.customerId ?? 0,
+                    order.invoiceNumber ?? 0,
+                    order.customerName ?? "",
+                    order.address ?? "",
+                    order.id!,
+                    1,
+                    order.customerId ?? -1,
+                  );
+                },
+              );
+            }),
+          )); SizedBox(
           height: size.height,
           width: size.width,
           child: AppRefreshIndicator(

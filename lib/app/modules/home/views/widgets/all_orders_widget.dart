@@ -6,6 +6,7 @@ import 'package:easy_hotel/app/core/values/app_strings.dart';
 import 'package:easy_hotel/app/modules/home/controllers/home_controller.dart';
 import 'package:easy_hotel/app/modules/home/views/widgets/order_container.dart';
 import 'package:easy_hotel/app/routes/app_pages.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,33 +34,31 @@ class AllOrdersWidget extends GetView<HomeController> {
         );
       }
       return SizedBox(
-          height: size.height,
           width: size.width,
           child: AppRefreshIndicator(
             onRefresh: () async => await controller.getAllOrders(),
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              child: Column(
-                children: [
-                  for(int i = 0; i < controller.allOrders.length; i ++)
-                    OrderContainer(
-                        false,
-                        controller.allOrders[i].invoiceNumber??0,
-                        controller.allOrders[i].customerId??0,
-                        controller.allOrders[i].invoiceNumber??0,
-                        controller.allOrders[i].customerName ??"",
-                        controller.allOrders[i].address,
-                        0,0,
-                      controller.activeOrders[i].customerId ?? -1,
-
-                    ),
-
-                ],
-              ),
-            ),
-          )
-      );
+            child: Obx(() {
+              return ListView.builder(
+                itemCount: controller.allOrders.length,
+                padding: const EdgeInsets.all(4),
+                dragStartBehavior: DragStartBehavior.start,
+                itemBuilder: (context, i) {
+                  final order = controller.allOrders[i];
+                  return OrderContainer(
+                    true,
+                    order.invoiceNumber ?? 0,
+                    order.customerId ?? 0,
+                    order.invoiceNumber ?? 0,
+                    order.customerName ?? "",
+                    order.address ?? "",
+                    order.id!,
+                    1,
+                    order.customerId ?? -1,
+                  );
+                },
+              );
+            }),
+          ));
     });
   }
 
